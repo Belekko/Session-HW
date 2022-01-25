@@ -20,7 +20,8 @@ const FormContainer = styled.div`
 `;
 
 export const Forms = () => {
-    const [usersData, setUsersData] = useState([]);
+    const localData = JSON.parse(localStorage.getItem("data"))
+    const [usersData, setUsersData] = useState(localData ? localData : []);
     const [userData, setUserData] = useState({
         name: "",
         number: "",
@@ -36,14 +37,14 @@ export const Forms = () => {
         } else if (inputName === "hobbi") {
             setUserData({ ...userData, hobbi: e.target.value });
         }
+    };
+    
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
         setUsersData((prevData) => {
             return [...prevData, userData];
         });
-    };
-
-    const onSubmitHandler = (e) => {
-        e.preventDefault();
-        localStorage.setItem("data", JSON.stringify(usersData));
+        localStorage.setItem("data", JSON.stringify([...usersData, userData]));
     };
 
     const onGetHandler = (e) => {
